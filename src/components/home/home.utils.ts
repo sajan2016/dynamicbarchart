@@ -1,3 +1,6 @@
+const ROWSPERPAGEARRAY=[10,25,50];
+const TOTALDEFAULTSELECTEDROWCOUNT=5;
+const DEFAULTROWSPERPAGE=10;
 
 type Order = 'asc' | 'desc';
 
@@ -78,10 +81,13 @@ interface GraphPlot{
     x:string[],
     y:number[],
     name:string,
-    type:string
+    type:string,
+    marker:{
+      color:string
+    }
 }
 
-const generatebargraphdata=(selectedid:readonly number[], rows:Data[])=>{
+const generatebargraphdata=(selectedid:readonly number[], rows:Data[],metrics:any)=>{
   let selecteddesserts:string[]=[]
   let selecteddesertcalories:number[]=[],selecteddesertfats:number[]=[],
   selecteddesertcarbs:number[]=[],selecteddesertproteins:number[]=[];
@@ -102,36 +108,63 @@ const generatebargraphdata=(selectedid:readonly number[], rows:Data[])=>{
     x: selecteddesserts,
     y: selecteddesertcalories,
     name: 'Calories',
-    type: 'bar'
+    type: 'bar',
+    marker: {
+      color: '#0000CC'
+    }
   };
   
   var trace2:GraphPlot = {
     x: selecteddesserts,
     y: selecteddesertfats,
     name: 'Fat (g)',
-    type: 'bar'
+    type: 'bar',
+    marker: {
+      color: '#FFFF00'
+    }
   };
 
   var trace3:GraphPlot= {
     x: selecteddesserts,
     y: selecteddesertcarbs,
     name: 'Carbs (g)',
-    type: 'bar'
+    type: 'bar',
+    marker: {
+      color: '#606060'
+    }
   };
   
   var trace4:GraphPlot= {
     x: selecteddesserts,
     y: selecteddesertproteins,
     name: 'Protein (g)',
-    type: 'bar'
+    type: 'bar',
+    marker: {
+      color: '#FF33FF'
+    }
   };
-  const data:GraphPlot[]=[trace1,trace2,trace3,trace4];
+
+  let data:GraphPlot[]=[];
+  if(metrics["calories"]){
+    data.push(trace1)
+  }
+
+  if(metrics["fat"]){
+    data.push(trace2)
+  }
+
+  if(metrics["carbs"]){
+    data.push(trace3)
+  }
+
+  if(metrics["protein"]){
+    data.push(trace4)
+  }
   const response= {
     data,
-    show: selecteddesertproteins.length>0?true:false
   }
   return response;
 }
 
-export { descendingComparator, getComparator, stableSort, generatebargraphdata};
+export { descendingComparator, getComparator, stableSort, generatebargraphdata,ROWSPERPAGEARRAY,TOTALDEFAULTSELECTEDROWCOUNT,DEFAULTROWSPERPAGE};
 export type { Order, Data, HeadCell, EnhancedTableProps, EnhancedTableToolbarProps,GraphPlot};

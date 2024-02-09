@@ -20,7 +20,8 @@ import { visuallyHidden } from '@mui/utils';
 import { Grid, Stack } from "@mui/material";
 import Box from '@mui/material/Box';
 
-import {getComparator,stableSort,Order,Data,HeadCell,EnhancedTableProps,EnhancedTableToolbarProps,generatebargraphdata, GraphPlot} from './home.utils';
+import {getComparator,stableSort,Order,Data,HeadCell,EnhancedTableProps,EnhancedTableToolbarProps,generatebargraphdata, GraphPlot, ROWSPERPAGEARRAY, TOTALDEFAULTSELECTEDROWCOUNT, DEFAULTROWSPERPAGE} from './home.utils';
+import FilterDialog from "../FilterDialog";
 
 const headCells: readonly HeadCell[] = [
   {
@@ -103,7 +104,7 @@ const headCells: readonly HeadCell[] = [
   );
 }
 
- const EnhancedTableToolbar=(props: EnhancedTableToolbarProps)=>{
+ const EnhancedTableToolbar=(props:any)=>{
   return (
     <Toolbar
       sx={{
@@ -120,7 +121,9 @@ const headCells: readonly HeadCell[] = [
           Nutrition
         </Typography>
       <Tooltip title="Filter list">
-          <IconButton>
+          <IconButton onClick={()=>{
+            props.setOpen(true)
+          }}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -132,7 +135,14 @@ const headCells: readonly HeadCell[] = [
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULTROWSPERPAGE);
+  const [open, setOpen] = React.useState(false);
+  const [metrics,setmetrics]=React.useState({
+    calories:true,
+    fat:true,
+    carbs:true,
+    protein:true,
+  })
 
   const {data:rows,isPending,isError,error}=getgraphdata(false);
 
@@ -144,7 +154,7 @@ const headCells: readonly HeadCell[] = [
       )
       let temp:number[]=[];
       data.forEach((d,index)=>{
-          if(index<5){
+          if(index< TOTALDEFAULTSELECTEDROWCOUNT){
             temp.push(d.id)
           }
       })
@@ -217,7 +227,7 @@ const headCells: readonly HeadCell[] = [
     )
       const tabledata= <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} setOpen={setOpen}/>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -285,7 +295,7 @@ const headCells: readonly HeadCell[] = [
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={ROWSPERPAGEARRAY}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
@@ -297,9 +307,8 @@ const headCells: readonly HeadCell[] = [
     </Box>
 
     let graphrelateddata:{
-      show:boolean,
       data:GraphPlot[]
-    }= generatebargraphdata(selected,rows);
+    }= generatebargraphdata(selected,rows,metrics);
     const graphdata=<>{
       <Barchart data={graphrelateddata.data}/>
     }
@@ -314,6 +323,7 @@ const headCells: readonly HeadCell[] = [
         {tabledata}
         </Grid>
       </Grid>
+      <FilterDialog open={open} setOpen={setOpen} setmetrics={setmetrics} metrics={metrics}/>
       </Stack>
     );
   }
