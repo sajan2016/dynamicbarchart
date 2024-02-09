@@ -1,37 +1,14 @@
-# React + TypeScript + Vite
+# Graph Demo with React + Vite + (plotly.js)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Technology used
+  1: React (vanilla React)
+  2: React Material UI V5 for styling
+  3: React Query + Axios for handling API calls
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-
-https://medium.com/@aditya.sawant122/creating-a-modular-http-service-in-react-step-by-step-guide-9b8d88747678#:~:text=The%20Facade%20Pattern%20provides%20a,mistakes%20by%20centralizing%20the%20logic.
-
-plotly js
-npm install react-plotly.js plotly.js --save
-React material ui
-npm install @mui/material @emotion/react @emotion/styled
+# How to run the project
+  # Clone the Repository
+      git clone https://github.com/sajan2016/dynamicbarchart.git  
+  # install dependencies
+    npm install
+  # Run the Project
+    npm run dev
